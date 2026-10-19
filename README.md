@@ -1,6 +1,6 @@
 # KnowFirm MCP
 
-Business lookup and search over KnowFirm's U.S. public-record API. Two read-only tools: `business_lookup` and `business_search`. Each call uses 1 credit on your KnowFirm account. No card or payment credentials are handled by this package.
+Business lookup and search over KnowFirm's U.S. public-record API. Three read-only tools: `business_lookup`, `business_search`, and `lookalike_businesses` (find companies similar to a seed by industry, size band, and HQ state). Each call uses 1 credit on your KnowFirm account. No card or payment credentials are handled by this package.
 
 ## Install
 
@@ -42,7 +42,7 @@ Open **Cursor Settings → MCP → Add new MCP server**, or edit `~/.cursor/mcp.
 }
 ```
 
-Reload MCP servers from the same settings page. The tools appear as `business_lookup` and `business_search`.
+Reload MCP servers from the same settings page. The tools appear as `business_lookup`, `business_search`, and `lookalike_businesses`.
 
 ### MCP Registry
 
