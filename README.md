@@ -53,6 +53,23 @@ The server is listed as `io.github.gitdhillonai/knowfirm` (stdio, npm package `@
 
 Clients that install from the registry still need your own `KNOWFIRM_API_KEY`. This repo does not publish new versions from routine doc updates.
 
+### Releasing (version consistency)
+
+The release version must match across `package.json`, `manifest.json`, `server.json`
+(top-level, the npm package entry, and the MCPB download URL/filename), `index.mjs`,
+and the committed `knowfirm-mcp-<version>.mcpb` (its filename, its embedded manifest,
+and the `fileSha256` pinned in `server.json`). `package.json` is the canonical source.
+
+- `npm run version:check` — fail if any artifact has drifted (also run as a test).
+- `node scripts/version.mjs <x.y.z>` — bump `package.json` and sync every text artifact.
+- `npm run version:sync` — sync every artifact to the current `package.json` version and
+  refresh `server.json`'s `fileSha256` from the committed bundle.
+
+The script never rebuilds the binary `.mcpb`; after a version bump, repack the bundle
+(`npx @anthropic-ai/mcpb pack`), rename it to `knowfirm-mcp-<version>.mcpb`, then run
+`npm run version:sync` so the pinned sha matches. `npm test` fails until the bundle is
+repacked, which keeps a half-finished release from shipping.
+
 ### Generic npx
 
 ```json

@@ -19,7 +19,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test.mjs"
+    "test": "node --test test.mjs scripts/version.test.mjs",
+    "version:check": "node scripts/version.mjs",
+    "version:sync": "node scripts/version.mjs --write"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
