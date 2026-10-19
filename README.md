@@ -1,6 +1,12 @@
 # KnowFirm MCP
 
-Business lookup and search over KnowFirm's U.S. public-record API. Two read-only tools: `business_lookup` and `business_search`. Each call uses 1 credit on your KnowFirm account. No card or payment credentials are handled by this package.
+Business lookup, search, and complaint-risk summaries over KnowFirm's U.S. public-record API. Three read-only tools: `business_lookup`, `business_search`, and `complaint_risk`. Each call uses 1 credit on your KnowFirm account. No card or payment credentials are handled by this package.
+
+## Tools
+
+- `business_lookup` — resolve one U.S. business by name across sources (identifiers, confidence, firmographics).
+- `business_search` — ranked name/query search for U.S. businesses.
+- `complaint_risk` — bounded, informational CFPB Consumer Complaint Database summary for a business (by name or KnowFirm id): a 24-month, scan-capped complaint count with top products/issues. **Not** a consumer report, credit score, or compliance/eligibility decision.
 
 ## Install
 
@@ -42,7 +48,7 @@ Open **Cursor Settings → MCP → Add new MCP server**, or edit `~/.cursor/mcp.
 }
 ```
 
-Reload MCP servers from the same settings page. The tools appear as `business_lookup` and `business_search`.
+Reload MCP servers from the same settings page. The tools appear as `business_lookup`, `business_search`, and `complaint_risk`.
 
 ### MCP Registry
 
