@@ -4,6 +4,6 @@
   "author":{"name":"Persoon.ai Inc."},
   "server":{"type":"node","entry_point":"index.mjs","mcp_config":{"command":"node","args":["${__dirname}/index.mjs"],"env":{"KNOWFIRM_API_KEY":"${user_config.api_key}"}}},
   "user_config":{"api_key":{"type":"string","title":"KnowFirm API key","description":"Your own key from https://knowfirm.com/login","sensitive":true,"required":true}},
-  "tools":[{"name":"business_lookup","description":"Resolve a U.S. business by name"},{"name":"business_search","description":"Search U.S. businesses"}],
+  "tools":[{"name":"business_lookup","description":"Resolve a U.S. business by name"},{"name":"business_search","description":"Search U.S. businesses"},{"name":"lookalike_businesses","description":"Find U.S. businesses similar to a seed (industry, size, state)"}],
   "license":"MIT","compatibility":{"runtimes":{"node":">=20"}}
 }
