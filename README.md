@@ -73,4 +73,6 @@ The server uses local stdio and sends API requests only to https://knowfirm.com.
 
 API docs: https://knowfirm.com/docs
 
+Install guide (copy-paste config for Claude Desktop, Cursor, VS Code, Windsurf, and the remote URL): https://knowfirm.com/docs/mcp
+
 The older `knowfirm` npm package is a separate HTTP SDK.
