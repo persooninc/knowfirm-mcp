@@ -28,6 +28,18 @@ test('provider failures do not echo secrets or arbitrary response body', async (
 });
 test('server constructs', () => { assert(server('kf_test_fixture')); });
 
+test('smithery.yaml: stdio start command, keyless tool scan, secret key, no baked secret', () => {
+  const yaml = readFileSync(new URL('./smithery.yaml', import.meta.url), 'utf8');
+  assert.match(yaml, /type:\s*stdio/, 'startCommand must be type: stdio');
+  assert.match(yaml, /required:\s*\[\s*\]/, 'configSchema required must be empty for keyless tools/list');
+  assert.match(yaml, /knowfirmApiKey:/, 'configSchema must expose the KnowFirm API key field');
+  assert.match(yaml, /format:\s*password/, 'the API key field must be marked secret (format: password)');
+  assert.match(yaml, /commandFunction:/, 'must define a commandFunction');
+  assert.match(yaml, /KNOWFIRM_API_KEY/, 'commandFunction must pass the key as KNOWFIRM_API_KEY');
+  assert.match(yaml, /index\.mjs/, 'commandFunction must start node index.mjs');
+  assert.ok(!/kf_live_/.test(yaml), 'smithery.yaml must not contain a live key');
+});
+
 // --- lookalike_businesses (MCP-07) ---
 
 test('lookalike hits /v1/business/similar with seed + limit, returns peers', async () => {
@@ -90,6 +102,7 @@ for (const limit of [0, 26, 2.5]) {
     await client.close();
   });
 }
+
 
 // --- MKT-04: npm/marketplace quality metadata ---
 test('package.json carries npm/directory quality metadata (repository, homepage, bugs, keywords)', () => {
