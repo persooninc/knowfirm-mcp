@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
@@ -88,6 +90,25 @@ for (const limit of [0, 26, 2.5]) {
     await client.close();
   });
 }
+
+// --- MKT-04: npm/marketplace quality metadata ---
+test('package.json carries npm/directory quality metadata (repository, homepage, bugs, keywords)', () => {
+  const pkg = JSON.parse(readFileSync(fileURLToPath(new URL('./package.json', import.meta.url)), 'utf8'));
+  assert.equal(typeof pkg.homepage, 'string');
+  assert.ok(pkg.homepage.length > 0, 'homepage must be non-empty');
+  assert.equal(typeof pkg.repository, 'object');
+  assert.equal(typeof pkg.repository.url, 'string');
+  assert.ok(/github\.com\/persooninc\/knowfirm-mcp/.test(pkg.repository.url), 'repository.url must point at persooninc/knowfirm-mcp');
+  assert.equal(typeof pkg.bugs, 'object');
+  assert.equal(typeof pkg.bugs.url, 'string');
+  assert.ok(pkg.bugs.url.length > 0, 'bugs.url must be non-empty');
+  assert.ok(Array.isArray(pkg.keywords) && pkg.keywords.length > 0, 'keywords must be a non-empty array');
+  assert.ok(pkg.keywords.every((k) => typeof k === 'string' && k.length > 0), 'every keyword must be a non-empty string');
+  for (const required of ['mcp', 'kyb', 'business-verification', 'screening']) {
+    assert.ok(pkg.keywords.includes(required), `keywords must include "${required}"`);
+  }
+});
+
 
 // --- FUN-02 funnel: keyless / 401 / 402 surface signup / upgrade UTM links (knowfirm.com #174) ---
 test('utm_source is normalized and defaults to mcp', () => {
