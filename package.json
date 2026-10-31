@@ -15,14 +15,36 @@
   "license": "MIT",
   "mcpName": "io.github.gitdhillonai/knowfirm",
   "homepage": "https://knowfirm.com/docs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/persooninc/knowfirm-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/persooninc/knowfirm-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "kyb",
+    "business-verification",
+    "business-lookup",
+    "business-search",
+    "lookalike",
+    "screening",
+    "due-diligence",
+    "knowfirm"
+  ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test.mjs"
+    "test": "node --test test.mjs scripts/check-versions.test.mjs",
+    "check-versions": "node scripts/check-versions.mjs",
+    "release:check": "node scripts/release-sync.mjs --check",
+    "release:set": "node scripts/release-sync.mjs set"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "zod": "^3.24.0"
+    "zod": "^4.6.7"
   }
 }

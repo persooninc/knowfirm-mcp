@@ -1,0 +1,24 @@
+name: ci
+
+# Runs the package test suite, which includes the OPS-02 version-sync guard
+# (scripts/check-versions.mjs): CI fails if the version disagrees across
+# package.json, manifest.json, server.json or the committed .mcpb bundle.
+
+on:
+  push:
+    branches: [main, "release/**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Version-sync guard (knowfirm.com#209)
+        run: npm run check-versions
+      - name: Test
+        run: npm test
