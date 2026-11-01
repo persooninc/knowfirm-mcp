@@ -1,0 +1,31 @@
+# Smithery configuration for the KnowFirm MCP server.
+# Reference: https://smithery.ai/docs
+#
+# Local stdio server. Bring your own KnowFirm API key — this repo never ships one.
+# KNOWFIRM_API_KEY is required to CALL the tools (business_lookup / business_search,
+# 1 credit each), but is intentionally left out of `required` so Smithery's tool
+# scan (initialize + tools/list) works with no key. The key is enforced at call
+# time inside index.mjs, which refuses any request without a valid kf_ key.
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required: []
+    additionalProperties: false
+    properties:
+      knowfirmApiKey:
+        type: string
+        title: KnowFirm API key
+        description: >-
+          Your own KnowFirm API key from https://knowfirm.com/login. Required to
+          call business_lookup and business_search (1 credit per call). Leave it
+          blank to browse the tool list without a key.
+        format: password
+  commandFunction: |-
+    (config) => ({
+      command: 'node',
+      args: ['index.mjs'],
+      env: config.knowfirmApiKey ? { KNOWFIRM_API_KEY: config.knowfirmApiKey } : {}
+    })
+  exampleConfig:
+    knowfirmApiKey: kf_test_example_key_not_real
