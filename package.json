@@ -8,9 +8,11 @@
   },
   "files": [
     "index.mjs",
+    "tools.mjs",
     "README.md",
     "LICENSE",
-    "manifest.json"
+    "manifest.json",
+    "CHANGELOG.md"
   ],
   "license": "MIT",
   "mcpName": "io.github.gitdhillonai/knowfirm",
