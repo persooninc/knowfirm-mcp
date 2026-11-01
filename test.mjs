@@ -369,3 +369,21 @@ test('manifest.json (MCPB) lists exactly the registered tool set', () => {
   const manifest = JSON.parse(readFileSync(fileURLToPath(new URL('./manifest.json', import.meta.url)), 'utf8'));
   assert.deepEqual(manifest.tools.map((t) => t.name).sort(), TOOLS.map((t) => t.name).sort());
 });
+test('prompts: kyb_check and vendor_due_diligence are listed keyless and only name registered tools', async () => {
+  const { PROMPTS } = await import('./index.mjs');
+  const s = server('');
+  const registered = Object.keys(s._registeredPrompts);
+  assert.deepEqual(registered.sort(), ['kyb_check', 'vendor_due_diligence']);
+  const toolNames = new Set(TOOLS.map((t) => t.name));
+  for (const p of PROMPTS) {
+    const text = p.text('Acme Corp');
+    assert.match(text, /Acme Corp/);
+    for (const called of text.match(/\b[a-z]+_[a-z_]+\b/g).filter((w) => w.startsWith('business_') || w.endsWith('_risk') || w.startsWith('lookalike'))) {
+      assert.ok(toolNames.has(called), `${p.name} references unknown tool ${called}`);
+    }
+    assert.match(text, /untrusted/);
+  }
+  const msg = await s._registeredPrompts.kyb_check.callback({ business: 'Acme Corp' });
+  assert.equal(msg.messages[0].role, 'user');
+  assert.match(msg.messages[0].content.text, /business_screening with name "Acme Corp"/);
+});

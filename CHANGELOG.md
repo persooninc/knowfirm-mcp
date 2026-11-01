@@ -11,6 +11,13 @@ does not update this file's latest version header.
 
 ## [Unreleased]
 
+### Added
+- `kyb_check` and `vendor_due_diligence` prompts: one-click workflows that chain lookup, screening, complaint risk and lookalikes.
+
+### Fixed
+- The server now starts when launched through an npx symlinked bin (resolves the real path before the main-module check).
+- An injected fetcher is honoured for every tool call; otherwise `fetch` is resolved per call.
+
 ## [0.1.0] - 2026-10-19
 
 ### Added
