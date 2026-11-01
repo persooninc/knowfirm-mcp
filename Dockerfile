@@ -3,6 +3,6 @@ FROM node:20-slim
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
-COPY index.mjs manifest.json LICENSE README.md ./
+COPY index.mjs tools.mjs manifest.json LICENSE README.md ./
 USER node
 ENTRYPOINT ["node", "index.mjs"]
