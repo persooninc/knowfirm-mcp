@@ -44,7 +44,8 @@
     "coverage": "c8 node --test test.mjs scripts/check-versions.test.mjs test/*.test.mjs",
     "check-versions": "node scripts/check-versions.mjs",
     "release:check": "node scripts/release-sync.mjs --check",
-    "release:set": "node scripts/release-sync.mjs set"
+    "release:set": "node scripts/release-sync.mjs set",
+    "stress": "node --expose-gc test/stress/stress.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

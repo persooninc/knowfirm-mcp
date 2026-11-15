@@ -25,3 +25,5 @@ jobs:
         run: npm run check-versions
       - name: Test with coverage (100% lines/branches/functions/statements enforced via .c8rc.json)
         run: npm run coverage
+      - name: Stress suite (targets in docs/perf-targets.md)
+        run: npm run stress
