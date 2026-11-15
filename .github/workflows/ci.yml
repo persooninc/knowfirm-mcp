@@ -20,5 +20,5 @@ jobs:
       - run: npm ci
       - name: Version-sync guard (knowfirm.com#209)
         run: npm run check-versions
-      - name: Test
-        run: npm test
+      - name: Test with coverage (100% lines/branches/functions/statements enforced via .c8rc.json)
+        run: npm run coverage

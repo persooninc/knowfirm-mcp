@@ -90,7 +90,7 @@ export const PROMPTS = [
 ];
 
 // Build a zod raw shape from a tool's plain-data inputSchema descriptor.
-function zodShape(inputSchema) {
+export function zodShape(inputSchema) {
   const shape = {};
   for (const [name, spec] of Object.entries(inputSchema)) {
     let field = spec.type === 'integer' || spec.type === 'number' ? z.number() : z.string();
@@ -131,8 +131,14 @@ export function server(key = process.env.KNOWFIRM_API_KEY, utmSource = process.e
   return mcp;
 }
 
-// realpath: npx runs the package through a symlinked bin, so compare the resolved path.
-const isMain = (() => { try { return import.meta.url === pathToFileURL(realpathSync(process.argv[1] ?? '')).href; } catch { return false; } })();
-if (isMain) {
-  server().connect(new StdioServerTransport()).catch(() => { console.error('KnowFirm MCP could not start'); process.exitCode = 1; });
+// Connect a server over stdio; a failed start is reported without leaking details.
+export async function main(srv = server(), transport = new StdioServerTransport()) {
+  try { await srv.connect(transport); }
+  catch { console.error('KnowFirm MCP could not start'); process.exitCode = 1; }
 }
+
+// realpath: npx runs the package through a symlinked bin, so compare the resolved path.
+export function isMainModule(argv1 = process.argv[1], url = import.meta.url) {
+  try { return url === pathToFileURL(realpathSync(argv1 ?? '')).href; } catch { return false; }
+}
+if (isMainModule()) main();

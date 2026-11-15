@@ -1,0 +1,11 @@
+{
+  "all": true,
+  "include": ["index.mjs", "tools.mjs", "scripts/*.mjs"],
+  "exclude": ["**/*.test.mjs"],
+  "check-coverage": true,
+  "lines": 100,
+  "branches": 100,
+  "functions": 100,
+  "statements": 100,
+  "reporter": ["text", "text-summary"]
+}

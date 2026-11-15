@@ -162,34 +162,35 @@ export function updateMcpbHash(root = ROOT) {
   return hash;
 }
 
-function main(argv) {
+// Runs a CLI command against `root` and returns the process exit code.
+export function main(argv, root = ROOT) {
   const [cmd, arg] = argv;
   if (cmd === 'set') {
     if (!arg) {
       console.error('usage: release-sync.mjs set <version>');
-      process.exit(2);
+      return 2;
     }
-    const changes = applyVersion(ROOT, arg);
+    const changes = applyVersion(root, arg);
     console.log(changes.length ? changes.join('\n') : `already at ${arg}`);
     console.log(`\nNext: rebuild ${mcpbName(arg)}, then run: node scripts/release-sync.mjs --hash`);
-    return;
+    return 0;
   }
   if (cmd === '--hash') {
-    const hash = updateMcpbHash(ROOT);
+    const hash = updateMcpbHash(root);
     console.log(`server.json fileSha256 = ${hash}`);
-    return;
+    return 0;
   }
   // default: --check
-  const { ok, version, problems } = checkConsistency(ROOT);
+  const { ok, version, problems } = checkConsistency(root);
   if (ok) {
     console.log(`version consistency OK at ${version}`);
-    return;
+    return 0;
   }
   console.error(`version inconsistency (source ${version}):`);
   for (const p of problems) console.error(`  - ${p}`);
-  process.exit(1);
+  return 1;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main(process.argv.slice(2));
+  process.exitCode = main(process.argv.slice(2));
 }
