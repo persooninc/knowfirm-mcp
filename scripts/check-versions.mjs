@@ -117,8 +117,9 @@ function readZipEntryText(buf, entryName) {
   return null;
 }
 
-function main() {
-  const { ok, canonical, items, mismatches } = collect();
+// Prints the report and returns the process exit code (0 ok, 1 drift).
+export function main(base = ROOT) {
+  const { ok, canonical, items, mismatches } = collect(base);
   console.log(`Version consistency check (canonical = package.json ${canonical}):`);
   for (const i of items) {
     console.log(`  ${i.version === canonical ? 'ok ' : 'XX '} ${i.source}: ${i.version}`);
@@ -129,11 +130,12 @@ function main() {
         mismatches.map((m) => `  - ${m.source}: ${m.version}`).join('\n') +
         `\n\nSync them (see scripts/version.mjs --write, knowfirm.com#178) before publishing.`,
     );
-    process.exit(1);
+    return 1;
   }
   console.log('\nAll artifacts agree.');
+  return 0;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main();
+  process.exitCode = main();
 }
