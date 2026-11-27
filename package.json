@@ -40,10 +40,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test.mjs scripts/check-versions.test.mjs",
-    "check-versions": "node scripts/check-versions.mjs",
-    "release:check": "node scripts/release-sync.mjs --check",
-    "release:set": "node scripts/release-sync.mjs set"
+    "test": "node --test test.mjs scripts/version.test.mjs",
+    "version:check": "node scripts/version.mjs",
+    "version:sync": "node scripts/version.mjs --write"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
