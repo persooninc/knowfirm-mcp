@@ -40,24 +40,11 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test.mjs scripts/check-versions.test.mjs test/*.test.mjs",
-    "coverage": "c8 node --test test.mjs scripts/check-versions.test.mjs test/*.test.mjs",
-    "check-versions": "node scripts/check-versions.mjs",
-    "release:check": "node scripts/release-sync.mjs --check",
-    "release:set": "node scripts/release-sync.mjs set",
-    "stress": "node --expose-gc test/stress/stress.mjs"
+    "test": "node --test test.mjs scripts/check-versions.test.mjs",
+    "check-versions": "node scripts/check-versions.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "zod": "^4.6.7"
-  },
-  "devDependencies": {
-    "c8": "^12.0.0"
-  },
-  "overrides": {
-    "test-exclude": {
-      "glob": "^14.0.6",
-      "minimatch": "^11.0.8"
-    }
   }
 }

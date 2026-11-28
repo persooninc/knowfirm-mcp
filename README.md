@@ -1,17 +1,13 @@
 # KnowFirm MCP
 
-Business lookup, search, screening, CFPB complaint-risk, segment preview, and lookalike discovery over KnowFirm's U.S. public-record API. Six read-only tools. Each uses 1 credit on your KnowFirm account except `business_screening` (2 credits). No card or payment credentials are handled by this package.
+Business lookup, search, lookalike discovery, and complaint-risk summaries over KnowFirm's U.S. public-record API. Four read-only tools: `business_lookup`, `business_search`, `lookalike_businesses`, and `complaint_risk`. Each call uses 1 credit on your KnowFirm account. No card or payment credentials are handled by this package.
 
 ## Tools
 
-- `business_lookup`: resolve one U.S. business by name across sources (identifiers, confidence, firmographics).
-- `business_search`: ranked name/query search for U.S. businesses.
-- `business_screening`: screen a name against the U.S. Consolidated Screening List; returns scored matches (2 credits).
-- `complaint_risk`: bounded, informational CFPB Consumer Complaint Database summary for a business (by name or KnowFirm id).
-- `business_segments`: preview a segment of U.S. businesses from a public-record source (DOL Form 5500, FDIC, FMCSA and more) by state, size, industry or filing recency: an exact count plus a 25-row sample.
-- `lookalike_businesses`: up to 25 U.S. businesses similar to a seed on industry, HQ state and size.
-
-None of these is a consumer report, credit score, or compliance/eligibility decision.
+- `business_lookup` — resolve one U.S. business by name across sources (identifiers, confidence, firmographics).
+- `business_search` — ranked name/query search for U.S. businesses.
+- `lookalike_businesses` — find U.S. businesses similar to a seed by industry, size band, and HQ state.
+- `complaint_risk` — bounded, informational CFPB Consumer Complaint Database summary for a business (by name or KnowFirm id): a 24-month, scan-capped complaint count with top products/issues. **Not** a consumer report, credit score, or compliance/eligibility decision.
 
 ## Install
 
@@ -63,6 +59,23 @@ The server is listed as `io.github.gitdhillonai/knowfirm` (stdio, npm package `@
 - Source manifest in this repo: `server.json`
 
 Clients that install from the registry still need your own `KNOWFIRM_API_KEY`. This repo does not publish new versions from routine doc updates.
+
+### Releasing (version consistency)
+
+The release version must match across `package.json`, `manifest.json`, `server.json`
+(top-level, the npm package entry, and the MCPB download URL/filename), `index.mjs`,
+and the committed `knowfirm-mcp-<version>.mcpb` (its filename, its embedded manifest,
+and the `fileSha256` pinned in `server.json`). `package.json` is the canonical source.
+
+- `npm run version:check` — fail if any artifact has drifted (also run as a test).
+- `node scripts/version.mjs <x.y.z>` — bump `package.json` and sync every text artifact.
+- `npm run version:sync` — sync every artifact to the current `package.json` version and
+  refresh `server.json`'s `fileSha256` from the committed bundle.
+
+The script never rebuilds the binary `.mcpb`; after a version bump, repack the bundle
+(`npx @anthropic-ai/mcpb pack`), rename it to `knowfirm-mcp-<version>.mcpb`, then run
+`npm run version:sync` so the pinned sha matches. `npm test` fails until the bundle is
+repacked, which keeps a half-finished release from shipping.
 
 ### Generic npx
 
